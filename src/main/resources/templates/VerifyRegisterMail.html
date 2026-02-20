@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Verify OTP</title>
+
+    <style>
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        body{
+            height:100vh;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            background: linear-gradient(-45deg,#667eea,#764ba2,#ff758c,#ff7eb3);
+            background-size:400% 400%;
+            animation: gradientMove 10s ease infinite;
+        }
+
+        @keyframes gradientMove{
+            0%{background-position:0% 50%;}
+            50%{background-position:100% 50%;}
+            100%{background-position:0% 50%;}
+        }
+
+        .card{
+            width:350px;
+            padding:40px 30px;
+            border-radius:20px;
+            background:rgba(255,255,255,0.15);
+            backdrop-filter: blur(20px);
+            box-shadow:0 20px 40px rgba(0,0,0,0.3);
+            text-align:center;
+            color:white;
+            animation: fadeIn 0.8s ease;
+        }
+
+        @keyframes fadeIn{
+            from{opacity:0; transform:translateY(20px);}
+            to{opacity:1; transform:translateY(0);}
+        }
+
+        h2{
+            margin-bottom:10px;
+            font-weight:600;
+        }
+
+        p{
+            font-size:14px;
+            margin-bottom:25px;
+            opacity:0.8;
+        }
+
+        .otp-input{
+            width:100%;
+            padding:15px;
+            border-radius:12px;
+            border:none;
+            outline:none;
+            font-size:20px;
+            text-align:center;
+            letter-spacing:8px;
+            margin-bottom:20px;
+            transition:0.3s;
+        }
+
+        .otp-input:focus{
+            transform:scale(1.05);
+            box-shadow:0 0 15px rgba(255,255,255,0.7);
+        }
+
+        button{
+            width:100%;
+            padding:14px;
+            border-radius:12px;
+            border:none;
+            background:white;
+            color:#764ba2;
+            font-weight:bold;
+            cursor:pointer;
+            transition:0.3s;
+        }
+
+        button:hover{
+            transform:translateY(-3px);
+            box-shadow:0 10px 20px rgba(0,0,0,0.3);
+        }
+
+        .resend{
+            margin-top:15px;
+            font-size:13px;
+            opacity:0.8;
+        }
+
+        .resend a{
+            color:white;
+            text-decoration:underline;
+        }
+		
+		
+    </style>
+	
+</head>
+
+<body>
+
+<div class="card">
+
+    <h2>OTP Verification</h2>
+    <p>Enter the 6-digit code sent to your email</p>
+	<div th:if="${Invalid}" 
+		     style="background:rgba(255,0,0,0.3);
+		            padding:5px;
+		            border-radius:10px;
+		            margin-bottom:15px;">
+		    <span th:text="${Invalid}"></span>
+		</div>
+
+    <form action="/verifyRegisterMail" method="post">
+		
+		<input type="hidden" name="email" th:value="${email}">
+		    <input type="hidden" name="name" th:value="${name}">
+		    <input type="hidden" name="password" th:value="${password}">
+		    <input type="hidden" name="phone" th:value="${phone}">
+		
+        <input type="text" 
+               name="otp" 
+               maxlength="6" 
+               pattern="[0-9]{6}" 
+               class="otp-input" 
+               placeholder="______" 
+               required>
+
+        <button type="submit">Verify OTP</button>
+		
+    </form>
+	
+
+    <div class="resend">
+        Didn’t receive code? <a href="/forgot">Resend</a>
+    </div>
+
+</div>
+
+</body>
+</html>

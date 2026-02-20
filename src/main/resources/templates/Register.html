@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Register</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(-45deg, #ff758c, #ff7eb3, #6a11cb, #2575fc);
+    background-size: 400% 400%;
+    animation: gradientMove 10s ease infinite;
+}
+
+@keyframes gradientMove {
+    0% {background-position: 0% 50%;}
+    50% {background-position: 100% 50%;}
+    100% {background-position: 0% 50%;}
+}
+
+.register-container {
+    width: 400px;
+    padding: 40px;
+    background: rgba(255,255,255,0.15);
+    backdrop-filter: blur(15px);
+    border-radius: 15px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+    color: white;
+    animation: fadeIn 0.7s ease-in-out;
+}
+
+.register-container h2 {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.input-box {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.input-box input {
+    width: 100%;
+    padding: 12px;
+    border-radius: 8px;
+    border: none;
+    outline: none;
+    font-size: 14px;
+}
+
+.input-box label {
+    position: absolute;
+    left: 12px;
+    top: 12px;
+    font-size: 14px;
+    color: #555;
+    transition: 0.3s;
+}
+
+.input-box input:focus + label,
+.input-box input:not(:placeholder-shown) + label {
+    top: -8px;
+    left: 8px;
+    font-size: 11px;
+    color: white;
+}
+
+.toggle-password {
+    position: absolute;
+    right: 12px;
+    top: 12px;
+    cursor: pointer;
+    color: #333;
+}
+
+.error-message {
+    font-size: 12px;
+    color: #ffdddd;
+    margin-top: 5px;
+    display: none;
+}
+
+button {
+    width: 100%;
+    padding: 12px;
+    border-radius: 8px;
+    border: none;
+    background: white;
+    color: #6a11cb;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button:hover {
+    transform: scale(1.05);
+    background: #eee;
+}
+
+.login-link {
+    text-align: center;
+    margin-top: 15px;
+    font-size: 14px;
+}
+
+.login-link a {
+    color: white;
+    text-decoration: underline;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+</style>
+</head>
+
+<body>
+
+<div class="register-container">
+    <h2>Create Account</h2>
+
+	<form action="/register" method="post" onsubmit="return registerUser()">
+		
+        <div class="input-box">
+            <input type="text" name="name" required placeholder=" ">
+            <label>Full Name</label>
+        </div>
+		<div th:if="${Exist}" 
+					     style="background:rgba(255,0,0,0.3);
+					            padding:5px;
+					            border-radius:10px;
+					            margin-bottom:15px;">
+					    <span th:text="${Exist}"></span>
+					</div>
+        <div class="input-box">
+            <input type="email" name="email" required placeholder=" ">
+            <label>Email</label>
+        </div>
+		
+        <div class="input-box">
+            <input type="number" name="phone" required placeholder=" ">
+            <label>Phone Number</label>
+        </div>
+
+        <div class="input-box">
+            <input type="password" name="password" id="password" required placeholder=" ">
+            <label>Password</label>
+            <span class="toggle-password" onclick="togglePassword()">👁</span>
+        </div>
+		
+		<div th:if="${Invalid}" 
+					     style="background:rgba(255,0,0,0.3);
+					            padding:10px;
+					            border-radius:10px;
+					            margin-bottom:15px;">
+					    <span th:text="${Invalid}"></span>
+					</div>
+        <div class="input-box">
+            <input type="password" name="confirmPassword" id="confirmPassword" required placeholder=" ">
+            <label>Confirm Password</label>
+            <div class="error-message" id="errorMessage">
+                Passwords do not match!
+            </div>
+        </div>
+
+        <button type="submit">Register</button>
+
+        <div class="login-link">
+            Already have an account? <a href="/">Login</a>
+        </div>
+
+    </form>
+</div>
+
+<script>
+function togglePassword() {
+    const password = document.getElementById("password");
+    password.type = password.type === "password" ? "text" : "password";
+}
+
+function registerUser(event) {
+    event.preventDefault();
+
+    const password = document.getElementById("password").value;
+    const confirmPassword = document.getElementById("confirmPassword").value;
+    const errorMessage = document.getElementById("errorMessage");
+
+    if (password !== confirmPassword) {
+        errorMessage.style.display = "block";
+        return false;
+    } else {
+        errorMessage.style.display = "none";
+    }
+
+    alert("Registration Successful!");
+    window.location.href = "/";
+}
+</script>
+
+</body>
+</html>
